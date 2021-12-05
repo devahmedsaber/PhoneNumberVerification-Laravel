@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Phone;
+use App\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -28,6 +30,8 @@ class HomeController extends Controller
 
     public function adminView()
     {
-        return view('dashboard');
+        $usersTotal = User::count();
+        $phonesTotal = Phone::count();
+        return view('dashboard', compact('usersTotal', 'phonesTotal'));
     }
 }

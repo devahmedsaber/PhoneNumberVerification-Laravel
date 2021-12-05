@@ -21,6 +21,19 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['middleware' => ['checkIsAdmin']], function () {
-    Route::get('/dashboard', 'HomeController@adminView')->name('admin.dashboard');
+Route::group(['middleware' => ['auth', 'checkIsAdmin']], function () {
+    Route::get('/', 'HomeController@adminView')->name('admin.dashboard');
+
+    Route::group(['prefix' => 'phone'], function () {
+        Route::get('/', 'PhonesController@index')->name('phone.index');
+        Route::get('check', 'PhonesController@check')->name('phone.check');
+        Route::post('verify', 'PhonesController@verify')->name('phone.verify');
+        Route::delete('delete/{id}', 'PhonesController@delete')->name('phone.delete');
+        Route::get('history', 'PhonesController@history')->name('phone.history');
+        Route::post('filter', 'PhonesController@filter')->name('phone.filter');
+    });
+
+    Route::resource('countries', 'CountriesController');
 });
+
+
